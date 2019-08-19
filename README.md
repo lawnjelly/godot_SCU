@@ -6,7 +6,8 @@ Aimed at Godot engine contributors, this set of scripts allows you to easily mod
 
 https://en.wikipedia.org/wiki/Single_Compilation_Unit
 
-Work in progress! Use with care, and particularly do not test for the first time on your own codebase.
+## Important
+Work in progress! Use with care, and particularly do not test for the first time on your own working version of Godot, as it will alter the Godot build files. Create a copy to test, until the system is stable and you are familiar with it.
 
 ## Installation
 1) From the parent folder of your godot source code, create a second folder called godot_SCU and clone / download this repository inside.
