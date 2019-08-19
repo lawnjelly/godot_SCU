@@ -1,0 +1,5 @@
+# Generated build files
+*.o
+
+# Intermediate SCU files
+*.cc
