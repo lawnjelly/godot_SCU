@@ -14,6 +14,10 @@ Work in progress! Use with care, and particularly do not test for the first time
 3) Add the extra switch -unity to your Scons command line. e.g. Scons p=x11 target=debug -unity
 4) Build as normal
 
+## Usage
+1) Add switch -unity to Scons to use, remove it to use a normal build
+2) To revert the patched files, run GO_UnpatchGodot.py. However note that the unpatching is not guaranteed to work, and reverting to the git versions of the patched files may be necessary in some circumstances.
+
 ## Notes
 To keep the unity build totally separate from the Godot repository (at least for now) the GO_PatchGodot.py script patches SConstruct and many of the SCsub files which tell Scons how to build Godot. It also applies a small patch to make_binders.py.
 
