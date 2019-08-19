@@ -11,11 +11,11 @@ Work in progress! Use with care, and particularly do not test for the first time
 ## Installation
 1) From the parent folder of your godot source code, create a second folder called godot_SCU and clone / download this repository inside.
 2) Open a command prompt in the godot_SCU folder and run GO_PatchGodot.py
-3) Add the extra switch -unity to your Scons command line. e.g. Scons p=x11 target=debug -unity
+3) Add the extra switch unity=True to your Scons command line. e.g. Scons p=x11 target=debug unity=True
 4) Build as normal
 
 ## Usage
-1) Add switch -unity to Scons to use, remove it to use a normal build
+1) Add switch unity=True to Scons to use, remove it to use a normal build
 2) To revert the patched files, run GO_UnpatchGodot.py. However note that the unpatching is not guaranteed to work, and reverting to the git versions of the patched files may be necessary in some circumstances.
 
 ## Notes
