@@ -265,8 +265,8 @@ env_gdnative.add_source_files(env.modules_sources, "gdnative_library_editor_plug
     szReplace = '\
 if env[\'unity\']:\n\
     env_gdnative.add_source_files(env.modules_sources, "' + g_szPathToSCU + 'modules_gdnative.cc")\n\
-    env.Depends("#misc/scu/SCU_modules_gdnative.cc", "gdnative_api_struct.gen.cpp")\n\
-    env.Depends("#misc/scu/SCU_modules_gdnative.cc", "gdnative_api_struct.gen.h")\n\
+    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.cpp")\n\
+    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.h")\n\
 else:\n\
     env_gdnative.add_source_files(env.modules_sources, "gdnative.cpp")\n\
     env_gdnative.add_source_files(env.modules_sources, "register_types.cpp")\n\
