@@ -144,13 +144,17 @@ opts.Add(BoolVariable(\'unity_no_refresh\', "Single compilation unit (unity) bui
     szReplace = szSearch + "\n\
 # Unity build\n\
 from subprocess import call\n\
+import os\n\
 if (env_base['unity_no_refresh']):\n\
     # unity build also set to active if this flag is set\n\
     env_base['unity'] = True\n\
 if (env_base['unity']):\n\
     env_base.Append(CPPDEFINES=['UNITY_BUILD'])\n\
     if (env_base['unity_no_refresh'] == False):\n\
+        szCurrWorkingDir = os.getcwd()\n\
+        os.chdir('../godot_SCU/')\n\
         call(\"../godot_SCU/GO_Create.py\")\n\
+        os.chdir(szCurrWorkingDir)\n\
 "
     replace_in_file("SConstruct", szSearch, szReplace)
 
