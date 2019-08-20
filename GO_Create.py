@@ -5,7 +5,7 @@ from os import listdir
 from os.path import isfile, join, isdir
 
 g_bVerbose = False
-g_bUseMacros = True
+g_bUseMacros = False
 
 def process_folder(depth, szBaseDir, szSubDir, szExtension, bRecursive, files, IgnoreList):
 

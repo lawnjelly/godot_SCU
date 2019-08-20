@@ -16,7 +16,7 @@ g_bVerbose = False
 g_bSuccess = True
 
 # whether to include specific dependencies, or rely on scons
-g_bUseDepends = True
+g_bUseDepends = False
 
 # Some files have extra tabs in the add_source_files section
 # This allows us to override this.
