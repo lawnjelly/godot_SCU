@@ -127,22 +127,28 @@ def DoPatch():
 
     # SConstruct
     szSearch = 'opts.Add(\'system_certs_path\', "Use this path as SSL certificates default for editor (for package maintainers)", \'\')\n'
-    szReplace = szSearch + 'opts.Add(BoolVariable(\'unity\', "Single compilation unit (unity) build", False))\n\n'
+    szReplace = szSearch + 'opts.Add(BoolVariable(\'unity\', "Single compilation unit (unity) build", False))\n\
+opts.Add(BoolVariable(\'unity_no_refresh\', "Single compilation unit (unity) build with no changes to file list", False))\n\n'
     replace_in_file("SConstruct", szSearch + "\n", szReplace)
 
     szSearch = "env_base.Append(CPPDEFINES=['DEBUG_MEMORY_ALLOC','DISABLE_FORCED_INLINE'])\n"
+#    szReplace = szSearch + "\n\
+# Unity build\n\
+#if (env_base['unity']):\n\
+#    env_base.Append(CPPDEFINES=['UNITY_BUILD'])\n\
+#"
+
     szReplace = szSearch + "\n\
 # Unity build\n\
+from subprocess import call\n\
+if (env_base['unity_no_refresh']):\n\
+    # unity build also set to active if this flag is set\n\
+    env_base['unity'] = True\n\
 if (env_base['unity']):\n\
     env_base.Append(CPPDEFINES=['UNITY_BUILD'])\n\
+    if (env_base['unity_no_refresh'] == False):\n\
+        call(\"../godot_SCU/GO_Create.py\")\n\
 "
-    #szReplace = szSearch + "\n\
-# Unity build\n\
-#from subprocess import call\n\
-#if (env_base['unity']):\n\
-    #env_base.Append(CPPDEFINES=['UNITY_BUILD'])\n\
-    #call(\"../godot_SCU/SCU_Create.py\")\n\
-#"
     replace_in_file("SConstruct", szSearch, szReplace)
 
     # core
@@ -162,14 +168,14 @@ if (env_base['unity']):\n\
     g_iNumTabs = 1
     extra_sources = []
     depends = []
-    depends.append("#core/authors.gen.h")
-    depends.append("#core/donors.gen.h")
-    depends.append("#core/license.gen.h")
-    depends.append("#core/io/certs_compressed.gen.h")
-    depends.append("builtin_fonts.gen.h")
-    depends.append("doc_data_compressed.gen.h")
-    depends.append("translations.gen.h")
-    depends.append("editor_icons.gen.h")
+    #depends.append("#core/authors.gen.h")
+    #depends.append("#core/donors.gen.h")
+    #depends.append("#core/license.gen.h")
+    #depends.append("#core/io/certs_compressed.gen.h")
+    #depends.append("builtin_fonts.gen.h")
+    #depends.append("doc_data_compressed.gen.h")
+    #depends.append("translations.gen.h")
+    #depends.append("editor_icons.gen.h")
     replace_sources("editor/SCsub", "env", "editor_sources", "editor", extra_sources, depends)
 
     replace_sources("editor/import/SCsub", "env", "editor_sources", "editor_import")
@@ -181,9 +187,9 @@ if (env_base['unity']):\n\
     # main
     extra_sources = []
     depends = []
-    depends.append("#main/app_icon.gen.h")
-    depends.append("#main/splash.gen.h")
-    depends.append("#main/splash_editor.gen.h")
+    #depends.append("#main/app_icon.gen.h")
+    #depends.append("#main/splash.gen.h")
+    #depends.append("#main/splash_editor.gen.h")
     replace_sources("main/SCsub", "env", "main_sources", "main", extra_sources, depends)
 
     replace_sources("main/tests/SCsub", "env", "tests_sources", "main_tests")
@@ -262,11 +268,11 @@ env_gdnative.add_source_files(env.modules_sources, "nativescript/*.cpp")\n\
 env_gdnative.add_source_files(env.modules_sources, "gdnative_library_singleton_editor.cpp")\n\
 env_gdnative.add_source_files(env.modules_sources, "gdnative_library_editor_plugin.cpp")\n\
 '
+#    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.cpp")\n\
+#    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.h")\n\
     szReplace = '\
 if env[\'unity\']:\n\
     env_gdnative.add_source_files(env.modules_sources, "' + g_szPathToSCU + 'modules_gdnative.cc")\n\
-    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.cpp")\n\
-    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.h")\n\
 else:\n\
     env_gdnative.add_source_files(env.modules_sources, "gdnative.cpp")\n\
     env_gdnative.add_source_files(env.modules_sources, "register_types.cpp")\n\

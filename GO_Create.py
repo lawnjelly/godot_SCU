@@ -64,16 +64,24 @@ def process(szDir, szExtension, szOutput, IgnoreList = [], bRecursive = False):
 def write_files(szDir, files, szOutput):
     f = open(szOutput, "w+")
 
-    f.write("// Single Compilation Unit\n")
-    f.write("#define SCU_IDENT(x) x\n")
-    f.write("#define SCU_XSTR(x) #x\n")
-    f.write("#define SCU_STR(x) SCU_XSTR(x)\n")
+    bUseMacros = False
 
-    f.write("#define SCU_PATH(x,y) SCU_STR(SCU_IDENT(x)SCU_IDENT(y))\n")
-    f.write("#define SCU_DIR " + szDir + "\n\n")
+    f.write("// Single Compilation Unit\n")
     
-    for fi in files:
-        f.write("#include SCU_PATH(SCU_DIR," + fi + ")\n")
+    if bUseMacros:
+        f.write("#define SCU_IDENT(x) x\n")
+        f.write("#define SCU_XSTR(x) #x\n")
+        f.write("#define SCU_STR(x) SCU_XSTR(x)\n")
+
+        f.write("#define SCU_PATH(x,y) SCU_STR(SCU_IDENT(x)SCU_IDENT(y))\n")
+        f.write("#define SCU_DIR " + szDir + "\n\n")
+        
+        for fi in files:
+            f.write("#include SCU_PATH(SCU_DIR," + fi + ")\n")
+    else:
+        for fi in files:
+            f.write('#include "' + szDir + fi + '"\n')
+        
         
     f.close()
 

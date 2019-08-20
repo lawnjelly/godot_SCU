@@ -18,7 +18,7 @@ Work in progress! Use with care. The script patches (modifies) many of the build
 ## Usage
 1) Add switch unity=True to Scons to use, remove it to use a normal build
 2) To revert the patched files, run GO_UnpatchGodot.py. However note that the unpatching is not guaranteed to work, and reverting to the git versions of the patched files may be necessary in some circumstances.
-3) When you add or remove source cpp files from the engine as you develop, each time you should run GO_Create.py. This will recreate all the SCU files for the unity build, ensuring all the sources are compiled. (Strictly speaking this is only necessary for the folders that are part of the unity build. Another option is to recreate the SCU files each time you run Scons, but I have turned that off for now.)
+3) The switch standard 'unity' will recreate the SCU files at the start of each build, which will mostly cope with adding or removing source cpp files from the Godot engine as you develop. For an even faster build, you can disable the SCU file recreation by using the flag 'unity_no_refresh' instead (until you need to add or remove source files).
 
 ## Notes
 To keep the unity build totally separate from the Godot repository (at least for now) the GO_PatchGodot.py script patches SConstruct and many of the SCsub files which tell Scons how to build Godot. It also applies a small patch to make_binders.py.
@@ -29,6 +29,8 @@ The unity build can adapt to a certain extent (adding / removing most source fil
 
 See here for more info:
 https://github.com/godotengine/godot/issues/13096
+
+For now, if you update to a newer version of godot_SCU, be sure to revert your build files (SCsub) using git before patching them to the new version.
 
 ## Common 'gotchas' working with Unity Builds
 
