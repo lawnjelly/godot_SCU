@@ -5,6 +5,7 @@ from os import listdir
 from os.path import isfile, join, isdir
 
 g_bVerbose = False
+g_bUseMacros = True
 
 def process_folder(depth, szBaseDir, szSubDir, szExtension, bRecursive, files, IgnoreList):
 
@@ -64,11 +65,10 @@ def process(szDir, szExtension, szOutput, IgnoreList = [], bRecursive = False):
 def write_files(szDir, files, szOutput):
     f = open(szOutput, "w+")
 
-    bUseMacros = False
 
     f.write("// Single Compilation Unit\n")
     
-    if bUseMacros:
+    if g_bUseMacros:
         f.write("#define SCU_IDENT(x) x\n")
         f.write("#define SCU_XSTR(x) #x\n")
         f.write("#define SCU_STR(x) SCU_XSTR(x)\n")

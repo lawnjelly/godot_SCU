@@ -15,6 +15,9 @@ g_bDoOutput = True
 g_bVerbose = False
 g_bSuccess = True
 
+# whether to include specific dependencies, or rely on scons
+g_bUseDepends = True
+
 # Some files have extra tabs in the add_source_files section
 # This allows us to override this.
 g_iNumTabs = 0
@@ -168,14 +171,15 @@ if (env_base['unity']):\n\
     g_iNumTabs = 1
     extra_sources = []
     depends = []
-    #depends.append("#core/authors.gen.h")
-    #depends.append("#core/donors.gen.h")
-    #depends.append("#core/license.gen.h")
-    #depends.append("#core/io/certs_compressed.gen.h")
-    #depends.append("builtin_fonts.gen.h")
-    #depends.append("doc_data_compressed.gen.h")
-    #depends.append("translations.gen.h")
-    #depends.append("editor_icons.gen.h")
+    if g_bUseDepends:
+        depends.append("#core/authors.gen.h")
+        depends.append("#core/donors.gen.h")
+        depends.append("#core/license.gen.h")
+        depends.append("#core/io/certs_compressed.gen.h")
+        depends.append("builtin_fonts.gen.h")
+        depends.append("doc_data_compressed.gen.h")
+        depends.append("translations.gen.h")
+        depends.append("editor_icons.gen.h")
     replace_sources("editor/SCsub", "env", "editor_sources", "editor", extra_sources, depends)
 
     replace_sources("editor/import/SCsub", "env", "editor_sources", "editor_import")
@@ -187,9 +191,10 @@ if (env_base['unity']):\n\
     # main
     extra_sources = []
     depends = []
-    #depends.append("#main/app_icon.gen.h")
-    #depends.append("#main/splash.gen.h")
-    #depends.append("#main/splash_editor.gen.h")
+    if g_bUseDepends:
+        depends.append("#main/app_icon.gen.h")
+        depends.append("#main/splash.gen.h")
+        depends.append("#main/splash_editor.gen.h")
     replace_sources("main/SCsub", "env", "main_sources", "main", extra_sources, depends)
 
     replace_sources("main/tests/SCsub", "env", "tests_sources", "main_tests")
@@ -268,11 +273,15 @@ env_gdnative.add_source_files(env.modules_sources, "nativescript/*.cpp")\n\
 env_gdnative.add_source_files(env.modules_sources, "gdnative_library_singleton_editor.cpp")\n\
 env_gdnative.add_source_files(env.modules_sources, "gdnative_library_editor_plugin.cpp")\n\
 '
-#    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.cpp")\n\
-#    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.h")\n\
+    szDepends = ""
+    if g_bUseDepends:
+        szDepends = '    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.cpp")\n\
+    env.Depends("' + g_szPathToSCU + 'modules_gdnative.cc", "gdnative_api_struct.gen.h")\n'
+
     szReplace = '\
 if env[\'unity\']:\n\
     env_gdnative.add_source_files(env.modules_sources, "' + g_szPathToSCU + 'modules_gdnative.cc")\n\
+' + szDepends + '\
 else:\n\
     env_gdnative.add_source_files(env.modules_sources, "gdnative.cpp")\n\
     env_gdnative.add_source_files(env.modules_sources, "register_types.cpp")\n\
